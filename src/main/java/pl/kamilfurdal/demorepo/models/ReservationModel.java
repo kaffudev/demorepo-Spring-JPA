@@ -7,6 +7,7 @@ import pl.kamilfurdal.demorepo.models.forms.ReservationForm;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -21,13 +22,13 @@ public class ReservationModel {
     //@Column(name = "dataname")
     private String name;
     private String lastname;
-    private Date date;
+    private LocalDate date;
     private String adres;
 
     public ReservationModel(ReservationForm form) {
         name = form.getName();
         lastname = form.getLastname();
-        date = form.getDate();
+        date = form.getFormatedDate();
         adres = form.getAdres();
 
 

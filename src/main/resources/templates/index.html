@@ -6,17 +6,47 @@
 </head>
 <body>
 <center>
+    <h1 th:text="${error}"></h1>
+    <br/>
     <div style="width: 100%; height: 100%;">
-    <form th:action="@{/}" th:object="${reservationForm}" method="post">
-        <input style="width: 50%;" type="text" placeholder="Imię:" th:field="*{name}">
-        <input style="width: 50%;" type="text" placeholder="Nazwisko:" th:field="*{lastname}">
-        <br>
-        <input style="width: 100%;" type="text" placeholder="Adres:" th:field="*{adres}">
-        <br>
-        <input style="width: 100%;" type="text" placeholder="Data:" th:field="*{date}">
-        <br>
-        <input style="width: 100%;" type="submit" value="Zarezerwuj">
-    </form>
+        <form th:action="@{/}" th:object="${reservationForm}" method="post">
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            <input style="width: 50%;" type="text" placeholder="Wprowadź imię..." th:field="*{name}">
+            <p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></p>
+            <input style="width: 50%;" type="text" placeholder="Wprowadź nazwisko..." th:field="*{lastname}">
+            <br>
+            <p th:if="${#fields.hasErrors('adres')}" th:errors="*{adres}"></p>
+            <input style="width: 100%;" type="text" placeholder="Wprowadź adres..." th:field="*{adres}">
+            <br>
+            <p th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></p>
+            <input style="width: 100%;" type="text" placeholder="Podaj datę..." th:field="*{date}">
+            <br>
+            <input style="width: 100%;" type="submit" value="Zarezerwuj">
+        </form>
+
+        <br/>
+        <h2>Table</h2>
+
+        <table border="1">
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Adres</th>
+                <th>Data</th>
+            </tr>
+            <th:block th:each="reservation : ${reservations}">
+                <tr>
+                    <th th:text="${reservation.name}"></th>
+                    <th th:text="${reservation.lastname}"></th>
+                    <th th:text="${reservation.adres}"></th>
+                    <th th:text="${reservation.date}"></th>
+                    <!--/book/delete/1   @PathVariable-->
+                    <!--<td> <a th:href="@{/book/delete/} + *{id}">Delete</a></td>-->
+                    <!--/book/delete?id=1   - @RequestParam-->
+                    <th> <a th:href="@{/book/delete?id=} + *{id}">Usuń</a></th>
+                </tr>
+            </th:block>
+        </table>
     </div>
 </center>
 </body>

@@ -24,6 +24,11 @@
             <input style="width: 100%;" type="submit" value="Zarezerwuj">
         </form>
 
+
+        <a  th:if="${reservations.hasNext()}" th:href="@{'/' + ${reservations.getNumber()+1}}">Następna</a>
+        |
+        <a  th:if="${reservations.hasPrevious()}" th:href="@{'/' + ${reservations.getNumber()-1}}">Poprzednia</a>
+
         <br/>
         <h2>Table</h2>
 
@@ -34,16 +39,13 @@
                 <th>Adres</th>
                 <th>Data</th>
             </tr>
-            <th:block th:each="reservation : ${reservations}">
+            <th:block th:each="reservation : ${reservations.getContent()}">
                 <tr>
                     <th th:text="${reservation.name}"></th>
                     <th th:text="${reservation.lastname}"></th>
                     <th th:text="${reservation.adres}"></th>
                     <th th:text="${reservation.date}"></th>
-                    <!--/book/delete/1   @PathVariable-->
-                    <!--<td> <a th:href="@{/book/delete/} + *{id}">Delete</a></td>-->
-                    <!--/book/delete?id=1   - @RequestParam-->
-                    <th> <a th:href="@{/book/delete?id=} + *{id}">Usuń</a></th>
+                    <th> <a th:href="@{/reservation/delete?id=} + ${reservation.id}">Usuń zgłoszenie</a></th>
                 </tr>
             </th:block>
         </table>

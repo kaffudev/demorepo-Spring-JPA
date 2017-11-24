@@ -1,5 +1,7 @@
 package pl.kamilfurdal.demorepo.models.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import pl.kamilfurdal.demorepo.models.ReservationModel;
@@ -19,6 +21,7 @@ public interface ReservationRepository extends CrudRepository<ReservationModel,L
         List<ReservationModel> findByDateAfter(LocalDate date);*/
 
         boolean existsByDateEquals(LocalDate date);
-        List<ReservationModel> findByDateIsBetween(LocalDate date1, LocalDate date2);
+        Page<ReservationModel> findByDateIsBetween(LocalDate date1, LocalDate date2, Pageable page);
+
 
 }

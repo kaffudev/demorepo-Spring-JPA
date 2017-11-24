@@ -1,24 +1,18 @@
 package pl.kamilfurdal.demorepo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pl.kamilfurdal.demorepo.models.ReservationModel;
 import pl.kamilfurdal.demorepo.models.forms.ReservationForm;
 import pl.kamilfurdal.demorepo.models.repositories.ReservationRepository;
-import pl.kamilfurdal.demorepo.models.services.StringService;
+
 
 import javax.validation.Valid;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -27,11 +21,13 @@ public class MainController {
     @Autowired
     ReservationRepository reservationRepository;
 
-    @GetMapping("/")
-    public String index(Model model){
+    @GetMapping("/{page}")
+    public String index(Model model , @PathVariable("page") int pageNumber){
         model.addAttribute("reservationForm",new ReservationForm());
+        PageRequest pageRequest = new PageRequest(pageNumber, 2);
+
         model.addAttribute("reservations", reservationRepository
-                .findByDateIsBetween(LocalDate.now(),LocalDate.now().plusWeeks(1)));
+                .findByDateIsBetween(LocalDate.now(),LocalDate.now().plusWeeks(1), pageRequest));
         return "index";
     }
 
@@ -43,9 +39,13 @@ public class MainController {
             else if (reservationRepository.existsByDateEquals(form.getFormatedDate())){
                 model.addAttribute("error", "Ten dzień jest już zajęty");
         }
-
         reservationRepository.save(new ReservationModel(form));
+        return "index";
+    }
 
+    @GetMapping("/reservation/delete")
+    public String deleteReservation(@RequestParam String id){
+        reservationRepository.delete(Long.valueOf(id));
         return "index";
     }
 

@@ -36,6 +36,5 @@ public class ReservationModel {
         date = form.getFormatedDate();
         adres = form.getAdres();
 
-
     }
 }

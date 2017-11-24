@@ -2,32 +2,34 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Reservation Manager</title>
 </head>
 <body>
-<center>
-    <h1 th:text="${error}"></h1>
-    <br/>
-    <div style="width: 100%; height: 100%;">
-        <form th:action="@{/}" th:object="${reservationForm}" method="post">
-            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-            <input style="width: 50%;" type="text" placeholder="Wprowadź imię..." th:field="*{name}">
-            <p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></p>
-            <input style="width: 50%;" type="text" placeholder="Wprowadź nazwisko..." th:field="*{lastname}">
-            <br>
-            <p th:if="${#fields.hasErrors('adres')}" th:errors="*{adres}"></p>
-            <input style="width: 100%;" type="text" placeholder="Wprowadź adres..." th:field="*{adres}">
-            <br>
-            <p th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></p>
-            <input style="width: 100%;" type="text" placeholder="Podaj datę..." th:field="*{date}">
-            <br>
-            <input style="width: 100%;" type="submit" value="Zarezerwuj">
-        </form>
-
-
-        <a  th:if="${reservations.hasNext()}" th:href="@{'/' + ${reservations.getNumber()+1}}">Następna</a>
+<h1>Manager rezerwacji</h1>
+<br/>
+<h1 th:text="${error}"></h1>
+<br/>
+<div style="width: 100%; height: 100%;">
+    <form th:action="@{/}" th:object="${reservationForm}" method="post">
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+        <input style="width: 30%;" type="text" placeholder="Wprowadź imię..." th:field="*{name}">
+        <br/>
+        <p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></p>
+        <input style="width: 30%;" type="text" placeholder="Wprowadź nazwisko..." th:field="*{lastname}">
+        <br/>
+        <p th:if="${#fields.hasErrors('adres')}" th:errors="*{adres}"></p>
+        <input style="width: 30%;" type="text" placeholder="Wprowadź adres..." th:field="*{adres}">
+        <br/>
+        <p th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></p>
+        <input style="width: 30%;" type="text" placeholder="Podaj datę..." th:field="*{date}">
+        <br/>
+        <input style="width: 20%;" type="submit" value="Zarezerwuj">
+        <br/>
+    </form>
+    <center>
+        <a th:if="${reservations.hasNext()}" th:href="@{'/' + ${reservations.getNumber()+1}}">Następna</a>
         |
-        <a  th:if="${reservations.hasPrevious()}" th:href="@{'/' + ${reservations.getNumber()-1}}">Poprzednia</a>
+        <a th:if="${reservations.hasPrevious()}" th:href="@{'/' + ${reservations.getNumber()-1}}">Poprzednia</a>
 
         <br/>
         <h2>Table</h2>
@@ -45,11 +47,11 @@
                     <th th:text="${reservation.lastname}"></th>
                     <th th:text="${reservation.adres}"></th>
                     <th th:text="${reservation.date}"></th>
-                    <th> <a th:href="@{/reservation/delete?id=} + ${reservation.id}">Usuń zgłoszenie</a></th>
+                    <th><a th:href="@{/reservation/delete?id=} + ${reservation.id}">Usuń zgłoszenie</a></th>
                 </tr>
             </th:block>
         </table>
-    </div>
+</div>
 </center>
 </body>
 </html>

@@ -10,7 +10,6 @@ import pl.kamilfurdal.demorepo.models.ReservationModel;
 import pl.kamilfurdal.demorepo.models.forms.ReservationForm;
 import pl.kamilfurdal.demorepo.models.repositories.ReservationRepository;
 
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 
@@ -24,20 +23,21 @@ public class MainController {
     @GetMapping("/{page}")
     public String index(Model model , @PathVariable("page") int pageNumber){
         model.addAttribute("reservationForm",new ReservationForm());
-        PageRequest pageRequest = new PageRequest(pageNumber, 2);
+            PageRequest pageRequest = new PageRequest(pageNumber, 8);
 
-        model.addAttribute("reservations", reservationRepository
-                .findByDateIsBetween(LocalDate.now(),LocalDate.now().plusWeeks(1), pageRequest));
+            model.addAttribute("reservations", reservationRepository.findAll(pageRequest));
+            /*model.addAttribute("reservations", reservationRepository
+                    .findByDateIsBetween(LocalDate.now(), LocalDate.now().plusWeeks(1), pageRequest));
+*/
         return "index";
     }
 
     @PostMapping("/")
     public String index(@ModelAttribute("reservationForm") @Valid ReservationForm form, BindingResult result, Model model){
-            if (result.hasErrors()) {
-                return "index";
-            }
-            else if (reservationRepository.existsByDateEquals(form.getFormatedDate())){
-                model.addAttribute("error", "Ten dzień jest już zajęty");
+        if(result.hasErrors()){
+            return "index";
+        }else if(reservationRepository.existsByDateEquals(form.getFormatedDate())){
+            model.addAttribute("error", "Ten dzień jest już zajęty");
         }
         reservationRepository.save(new ReservationModel(form));
         return "index";
@@ -49,15 +49,4 @@ public class MainController {
         return "index";
     }
 
-    /*@GetMapping("/test")
-    @ResponseBody
-    public String index(){
-        List<ReservationModel> reservationModel = reservationRepository.findByName("Kamil");
-
-
-        return reservationModel.stream()
-                .map(s -> s.toString())
-                .collect(Collectors.joining( " , "));
-    }
-*/
 }
